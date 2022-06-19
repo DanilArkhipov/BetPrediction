@@ -31,7 +31,7 @@ public class PlayerRepository : IPlayerRepository
             .FirstOrDefaultAsync(x => x.AccountId == accountId);
     }
 
-    public async Task<List<PlayerEntity>> GetTeamPlayersList(int teamId)
+    public async Task<List<PlayerEntity>> GetTeamPlayersList(long teamId)
     {
         return await _context.Players.Where(player => player.TeamId == teamId)
             .ToListAsync();
@@ -40,13 +40,9 @@ public class PlayerRepository : IPlayerRepository
     public async Task SavePlayerAsync(PlayerEntity playerEntity)
     {
         if (playerEntity.Id == default)
-        {
             _context.Players.Add(playerEntity);
-        }
         else
-        {
             _context.Players.Update(playerEntity);
-        }
 
         await _context.SaveChangesAsync();
     }
@@ -54,17 +50,11 @@ public class PlayerRepository : IPlayerRepository
     public async Task SavePlayersAsync(List<PlayerEntity> playerEntities)
     {
         foreach (var playerEntity in playerEntities)
-        {
             if (playerEntity.Id == default)
-            {
                 _context.Players.Add(playerEntity);
-            }
             else
-            {
                 _context.Players.Update(playerEntity);
-            }
-        }
-        
+
         await _context.SaveChangesAsync();
     }
 

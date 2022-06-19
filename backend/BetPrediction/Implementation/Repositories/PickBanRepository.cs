@@ -17,13 +17,9 @@ public class PickBanRepository : IPickBanRepository
     public async Task SavePickBanAsync(PickBanEntity pickBanEntity)
     {
         if (pickBanEntity.Id == default)
-        {
             _context.PickBans.Add(pickBanEntity);
-        }
         else
-        {
             _context.PickBans.Update(pickBanEntity);
-        }
 
         await _context.SaveChangesAsync();
     }
@@ -31,17 +27,11 @@ public class PickBanRepository : IPickBanRepository
     public async Task SavePickBansAsync(List<PickBanEntity> pickBanEntities)
     {
         foreach (var pickBanEntity in pickBanEntities)
-        {
             if (pickBanEntity.Id == default)
-            {
                 _context.PickBans.Add(pickBanEntity);
-            }
             else
-            {
                 _context.PickBans.Update(pickBanEntity);
-            }
-        }
-        
+
         await _context.SaveChangesAsync();
     }
 
@@ -49,6 +39,22 @@ public class PickBanRepository : IPickBanRepository
     {
         return await _context.PickBans
             .Where(x => x.GameId == gameId)
+            .ToListAsync();
+    }
+
+    public async Task<List<PickBanEntity>> GetPickBansForPeriod(DateOnly startPeriodDate, DateOnly endPeriodDate)
+    {
+        var unixStartDate =
+            new DateTimeOffset(new DateTime(startPeriodDate.Year, startPeriodDate.Month, startPeriodDate.Day))
+                .ToUnixTimeSeconds();
+        var unixEndDate =
+            new DateTimeOffset(new DateTime(endPeriodDate.Year, endPeriodDate.Month, endPeriodDate.Day, 23, 59, 59))
+                .ToUnixTimeSeconds();
+
+        return await _context.Games
+            .Where(x => x.StartTime <= unixStartDate && x.StartTime >= unixEndDate)
+            .Join(_context.PickBans, game => game.MatchId, pickBan => pickBan.GameId, (game, pickBan) =>
+                pickBan)
             .ToListAsync();
     }
 }

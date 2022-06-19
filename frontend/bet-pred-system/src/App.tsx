@@ -1,12 +1,13 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Teams from "./pages/Teams";
 import Players from "./pages/Players";
-import Main from "./pages/Main";
 import Player from "./pages/Player";
 import Administration from "./pages/Administration";
+import Login from "./pages/Login";
+import Registration from "./pages/Registration";
+import Prediction from "./pages/Prediction";
 
 function App() {
   return (
@@ -16,7 +17,10 @@ function App() {
         <Route path="Teams" element={<Teams />} />
         <Route path="Players" element={<Players />} />
         <Route path="Player/:id" element={<Player />} />
+        <Route path="Prediction" element={<Prediction />} />
         <Route path="Administration" element={<Administration />} />
+        <Route path="Login" element={<Login />} />
+        <Route path="Registration" element={<Registration />} />
       </Routes>
     </BrowserRouter>
   );

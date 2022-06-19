@@ -1,8 +1,6 @@
 using AutoMapper;
 using Implementation.Extensions;
 using Implementation.OpenDotaApi.Models.Responses;
-using Parsers;
-using Parsers.Models.Player;
 using Repositories;
 using Repositories.Models.Entities;
 using Services;

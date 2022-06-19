@@ -9,4 +9,6 @@ public interface IPlayerGameRepository
      Task SavePlayerGamesAsync(List<PlayerGameEntity> playerGameEntities);
 
      Task<List<PlayerGameEntity>> GetPlayerGamesByGameId(long gameId);
+     
+     Task<List<PlayerGameEntity>> GetPlayerGamesAsync();
 }

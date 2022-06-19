@@ -26,4 +26,6 @@ public class PlayerShortInfo
     /// Матчи
     /// </summary>
     public string MatchesCount { get; set; }
+    
+    public string PlayerUrl { get; set; }
 }

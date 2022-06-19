@@ -70,12 +70,12 @@ function Player() {
   ];
   const newPageContent = new PlayerModel({
     id: "B590C05D-0008-4EB2-7EE9-08DB45B1CD58",
-    name: "RAMZES666",
-    avatarUrl: "https://dota2.ru/img/esport/player/433.png?1681041365",
-    teamName: "HellRaisers",
+    name: "TZY",
+    avatarUrl: "https://dota2.ru/img/esport/player/4353.png?1674467887",
+    teamName: "iG.Vitality",
     role: "Основа",
-    region: "Россия",
-    matchesCount: 2486,
+    region: "Китай",
+    matchesCount: 823,
     winRate: 51.3,
     streak: 2,
     avgKills: 11.2,

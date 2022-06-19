@@ -4,10 +4,13 @@ using Implementation.Parsers;
 using Implementation.Parsers.Models.Match;
 using Implementation.Repositories;
 using Implementation.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Parsers;
+using Parsers.Models.Player;
 using Repositories;
+using Repositories.Models.Entities;
 using Services;
 
 namespace Implementation;
@@ -21,6 +24,11 @@ public static class InfrastructureConfiguration
             options.UseSqlServer(
                 @"Server=DESKTOP-520CUVL;Database=BetPredictionDB;Trusted_Connection=True;TrustServerCertificate=true;"));
 
+        serviceCollection.AddIdentityCore<UserEntity>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<DataBaseContext>()
+            ;
+
         serviceCollection.AddScoped<IPlayerRepository, PlayerRepository>();
         serviceCollection.AddScoped<ITeamRepository, TeamRepository>();
         serviceCollection.AddScoped<IHeroRepository, HeroRepository>();
@@ -29,14 +37,15 @@ public static class InfrastructureConfiguration
         serviceCollection.AddScoped<IPickBanRepository, PickBanRepository>();
         serviceCollection.AddScoped<ILeagueRepository, LeagueRepository>();
         serviceCollection.AddScoped<IGameRepository, GameRepository>();
-        
+
         serviceCollection.AddScoped<IPlayerService, PlayerService>();
         serviceCollection.AddScoped<ITeamService, TeamService>();
         serviceCollection.AddScoped<IGameService, GameService>();
         serviceCollection.AddScoped<IHeroServices, HeroService>();
         serviceCollection.AddScoped<IPatchService, PatchService>();
 
-        //serviceCollection.AddScoped<IPaginatedParser<PlayerShortInfo, BaseTableParserParams>, PlayerShortInfoParser>();
+        serviceCollection.AddScoped<IPaginatedParser<PlayerShortInfo, BaseTableParserParams>, PlayerShortInfoParser>();
+        serviceCollection.AddScoped<IParser<PlayerFullInfo, BaseParserParams>, PlayerInfoParser>();
         serviceCollection.AddScoped<IPaginatedParser<MatchesListItem, BaseTableParserParams>, MatchesListParser>();
         serviceCollection.AddScoped<IParser<MatchInfo, BaseParserParams>, MatchParser>();
 

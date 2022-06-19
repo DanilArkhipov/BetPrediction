@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ButtonAppBar from "../components/ButtonAppBar";
 import { BaseListModel } from "../models/BaseListModel";
-import { PlayersListItemModel } from "../models/PlayersListItemModel";
 import { GridPaginationModel } from "@mui/x-data-grid/models/gridPaginationProps";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { GRID_RUSSIAN_LOCALE_TEXT } from "../locale/GridLocale";
@@ -41,18 +40,20 @@ function Teams() {
   }, []);
 
   const columns: GridColDef[] = [
-    {
-      field: "teamLogoUrl",
-      headerName: "",
-      width: 75,
-      renderCell: (params) => <img src={params.value} width={50} height={50} />,
-    },
+    // {
+    //   field: "teamLogoUrl",
+    //   headerName: "",
+    //   width: 75,
+    //   renderCell: (params) => <img src={params.value} width={50} height={50} />,
+    // },
     {
       field: "teamName",
       headerName: "Название",
       type: "string",
       sortable: false,
       flex: 1,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "teamTag",
@@ -60,6 +61,8 @@ function Teams() {
       type: "string",
       sortable: false,
       flex: 1,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "totalWins",
@@ -67,6 +70,8 @@ function Teams() {
       type: "string",
       sortable: false,
       flex: 1,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "totalLosses",
@@ -74,6 +79,8 @@ function Teams() {
       type: "string",
       sortable: false,
       flex: 1,
+      headerAlign: "center",
+      align: "center",
     },
   ];
 

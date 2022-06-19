@@ -51,4 +51,10 @@ public class PlayerGameRepository: IPlayerGameRepository
             .Where(x => x.GameId == gameId)
             .ToListAsync();
     }
+
+    public async Task<List<PlayerGameEntity>> GetPlayerGamesAsync()
+    {
+        return await _context.PlayerGames
+            .ToListAsync();
+    }
 }

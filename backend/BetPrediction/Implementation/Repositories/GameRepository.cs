@@ -5,7 +5,7 @@ using Repositories.Models.Entities;
 
 namespace Implementation.Repositories;
 
-public class GameRepository: IGameRepository
+public class GameRepository : IGameRepository
 {
     private readonly DataBaseContext _context;
 
@@ -23,14 +23,15 @@ public class GameRepository: IGameRepository
     public async Task SaveGameAsync(GameEntity gameEntity)
     {
         if (gameEntity.Id == default)
-        {
             _context.Games.Add(gameEntity);
-        }
         else
-        {
             _context.Games.Update(gameEntity);
-        }
 
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<List<GameEntity>> GetGamesAsync()
+    {
+        return await _context.Games.ToListAsync();
     }
 }

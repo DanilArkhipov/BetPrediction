@@ -1,6 +1,7 @@
 using AutoMapper;
 using Implementation.Extensions;
 using Implementation.OpenDotaApi.Models.Responses;
+using Models.Entities.Player;
 using Repositories.Models.Entities;
 
 namespace Implementation.AutoMapperProfiles;
@@ -46,5 +47,7 @@ public class PlayerGameProfile : Profile
                 .MapFrom(source => source.MultiKills.UltraKillsCount))
             .ForMember(nameof(PlayerGameEntity.RampagesCount), opt => opt
                 .MapFrom(source => source.MultiKills.RampagesCount));
+
+        CreateMap<PlayerGameEntity, PlayerIndicators>();
     }
 }

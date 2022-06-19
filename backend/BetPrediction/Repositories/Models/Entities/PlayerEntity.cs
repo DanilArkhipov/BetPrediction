@@ -1,3 +1,5 @@
+using Repositories.Models.Enums;
+
 namespace Repositories.Models.Entities;
 
 public class PlayerEntity: UpdatableEntity<Guid>
@@ -5,12 +7,6 @@ public class PlayerEntity: UpdatableEntity<Guid>
     public long AccountId { get; init; }
 
     public string? SteamId { get; init; }
-
-    public string? AvatarUrl { get; init; }
-
-    public string? AvatarMediumUrl { get; init; }
-
-    public string? AvatarFullUrl { get; init; }
 
     public string? ProfileUrl { get; init; }
 
@@ -45,4 +41,14 @@ public class PlayerEntity: UpdatableEntity<Guid>
     public int? LockedUntil { get; init; }
     
     public TeamEntity? Team { get; set; }
+    
+    public PlayerRole PlayerRole { get; set; }
+    
+    public DateTime BirthDate { get; set; }
+    
+    public double TotalPrizesInDollars { get; set; }
+    
+    public int MatchesCount { get; set; }
+    
+    public string? ProfessionalAvatarUrl { get; set; }
 }

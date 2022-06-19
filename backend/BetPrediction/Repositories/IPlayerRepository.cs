@@ -10,10 +10,10 @@ public interface IPlayerRepository
 
     Task<PlayerEntity?> GetPlayerByAccountId(long accountId);
 
-    Task<List<PlayerEntity>> GetTeamPlayersList(int teamId);
+    Task<List<PlayerEntity>> GetTeamPlayersList(long teamId);
 
     Task SavePlayerAsync(PlayerEntity playerEntity);
-    
+
     Task SavePlayersAsync(List<PlayerEntity> playerEntities);
 
     Task AddPlayersAsync(List<PlayerEntity> players);

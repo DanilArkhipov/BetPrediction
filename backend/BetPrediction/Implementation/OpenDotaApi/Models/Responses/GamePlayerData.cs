@@ -382,4 +382,7 @@ public record GamePlayerData
     /// </summary>
     [JsonPropertyName("rank_tier")]
     public int? RankTier { get; init; }
+    
+    [JsonPropertyName("isRadiant")]
+    public bool? IsRadiant { get; init; }
 }

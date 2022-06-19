@@ -133,4 +133,6 @@ public class PlayerGameEntity: BaseEntity<Guid>
     public double? ActionsPerMinute { get; init; }
     
     public int? RankTier { get; init; }
+    
+    public bool? IsRadiant { get; init; }
 }
