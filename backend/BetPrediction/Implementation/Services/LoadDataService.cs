@@ -12,16 +12,15 @@ namespace Implementation.Services;
 public class LoadDataService : ILoadDataService
 {
     private readonly IPlayerRepository _playerRepository;
-    private readonly IPaginatedParser<PlayerShortInfo, BaseTableParserParams> _playerShortInfoParser;
+   // private readonly IPaginatedParser<PlayerShortInfo, BaseTableParserParams> _playerShortInfoParser;
     private readonly HttpClient _openDotaHttpClient;
     private readonly IMapper _mapper;
 
     public LoadDataService(IPlayerRepository playerRepository,
-        IPaginatedParser<PlayerShortInfo, BaseTableParserParams> playerShortInfoParser,
         IHttpClientFactory httpClientFactory, IMapper mapper)
     {
         _playerRepository = playerRepository;
-        _playerShortInfoParser = playerShortInfoParser;
+       // _playerShortInfoParser = playerShortInfoParser;
         _mapper = mapper;
         _openDotaHttpClient = httpClientFactory.CreateClient(Constants.OpenDotaApiHttpClientName);
     }

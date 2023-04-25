@@ -2,17 +2,7 @@ namespace Repositories.Models.Entities;
 
 public class PlayerEntity: UpdatableEntity<Guid>
 {
-    /// <summary>
-    /// Призовые
-    /// </summary>
-    //public string TotalPrize { get; set; }
-
-    /// <summary>
-    /// Матчи
-    /// </summary>
-    //public string MatchesCount { get; set; }
-
-    public int AccountId { get; init; }
+    public long AccountId { get; init; }
 
     public string? SteamId { get; init; }
 

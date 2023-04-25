@@ -25,6 +25,12 @@ public class PlayerRepository : IPlayerRepository
             .FirstOrDefaultAsync(player => player.Name == name);
     }
 
+    public async Task<PlayerEntity?> GetPlayerByAccountId(long accountId)
+    {
+        return await _context.Players
+            .FirstOrDefaultAsync(x => x.AccountId == accountId);
+    }
+
     public async Task<List<PlayerEntity>> GetTeamPlayersList(int teamId)
     {
         return await _context.Players.Where(player => player.TeamId == teamId)
@@ -42,6 +48,23 @@ public class PlayerRepository : IPlayerRepository
             _context.Players.Update(playerEntity);
         }
 
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task SavePlayersAsync(List<PlayerEntity> playerEntities)
+    {
+        foreach (var playerEntity in playerEntities)
+        {
+            if (playerEntity.Id == default)
+            {
+                _context.Players.Add(playerEntity);
+            }
+            else
+            {
+                _context.Players.Update(playerEntity);
+            }
+        }
+        
         await _context.SaveChangesAsync();
     }
 

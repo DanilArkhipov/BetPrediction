@@ -8,9 +8,13 @@ public interface IPlayerRepository
 
     Task<PlayerEntity?> GetPlayerByNameAsync(string name);
 
+    Task<PlayerEntity?> GetPlayerByAccountId(long accountId);
+
     Task<List<PlayerEntity>> GetTeamPlayersList(int teamId);
 
     Task SavePlayerAsync(PlayerEntity playerEntity);
+    
+    Task SavePlayersAsync(List<PlayerEntity> playerEntities);
 
     Task AddPlayersAsync(List<PlayerEntity> players);
 }

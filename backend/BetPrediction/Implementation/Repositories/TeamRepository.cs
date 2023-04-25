@@ -38,9 +38,33 @@ public class TeamRepository: ITeamRepository
 
         await _context.SaveChangesAsync();
     }
+    
+    public async Task SaveTeamsAsync(List<TeamEntity> teamEntities)
+    {
+
+        foreach (var teamEntity in teamEntities)
+        {
+            if (teamEntity.Id != default)
+            {
+                _context.Teams.Update(teamEntity);
+            }
+            else
+            {
+                _context.Teams.Add(teamEntity);
+            }
+        }
+        
+        await _context.SaveChangesAsync();
+    }
 
     public Task AddTeamsAsync(List<TeamEntity> teams)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<TeamEntity?> GetTeamByOpenDotaId(long id)
+    {
+        return await _context.Teams
+            .FirstOrDefaultAsync(x => x.TeamId == id);
     }
 }

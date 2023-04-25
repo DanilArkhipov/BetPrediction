@@ -12,42 +12,39 @@ namespace Implementation.Services;
 public class PlayerService : IPlayerService
 {
     private readonly IPlayerRepository _playerRepository;
-    private readonly IPaginatedParser<PlayerShortInfo, BaseTableParserParams> _playerShortInfoParser;
     private readonly HttpClient _openDotaHttpClient;
     private readonly IMapper _mapper;
 
-    public PlayerService(IPlayerRepository playerRepository,
-        IPaginatedParser<PlayerShortInfo, BaseTableParserParams> playerShortInfoParser, HttpClient openDotaHttpClient,
+    public PlayerService(IPlayerRepository playerRepository, IHttpClientFactory httpClientFactory,
         IMapper mapper)
     {
         _playerRepository = playerRepository;
-        _playerShortInfoParser = playerShortInfoParser;
-        _openDotaHttpClient = openDotaHttpClient;
+        _openDotaHttpClient = httpClientFactory.CreateClient(Constants.OpenDotaApiHttpClientName);
         _mapper = mapper;
     }
 
     public async Task LoadPlayersDataToSystem()
     {
         var proPlayersList = await _openDotaHttpClient.GetDataAsync<List<ProPlayerData>>("proPlayers");
+        var updatedPlayers = new List<PlayerEntity>(proPlayersList.Count);
 
         foreach (var player in proPlayersList)
         {
-            PlayerEntity? playerEntity = null;
-            if (player.Name is not null)
-            {
-                playerEntity = await _playerRepository.GetPlayerByNameAsync(player.Name!);
-            }
+            var playerEntity = await _playerRepository.GetPlayerByAccountId(player.AccountId);
+            
 
             if (playerEntity is not null)
             {
                 _mapper.Map(player, playerEntity);
-                await _playerRepository.SavePlayerAsync(playerEntity);
             }
             else
             {
                 playerEntity = _mapper.Map<PlayerEntity>(player);
-                await _playerRepository.SavePlayerAsync(playerEntity);
             }
+            
+            updatedPlayers.Add(playerEntity);
         }
+
+        await _playerRepository.SavePlayersAsync(updatedPlayers);
     }
 }

@@ -10,5 +10,9 @@ public interface ITeamRepository
 
     Task SaveTeamAsync(TeamEntity teamEntity);
 
+    Task SaveTeamsAsync(List<TeamEntity> teamEntities);
+
     Task AddTeamsAsync(List<TeamEntity> teams);
+
+    Task<TeamEntity?> GetTeamByOpenDotaId(long id);
 }

@@ -13,15 +13,13 @@ public class TeamService: ITeamService
 {
     private readonly IPlayerRepository _playerRepository;
     private readonly ITeamRepository _teamRepository;
-    private readonly IPaginatedParser<PlayerShortInfo, BaseTableParserParams> _playerShortInfoParser;
     private readonly HttpClient _openDotaHttpClient;
     private readonly IMapper _mapper;
 
-    public TeamService(IPlayerRepository playerRepository, IPaginatedParser<PlayerShortInfo, BaseTableParserParams> playerShortInfoParser, HttpClient openDotaHttpClient, IMapper mapper, ITeamRepository teamRepository)
+    public TeamService(IPlayerRepository playerRepository, IHttpClientFactory httpClientFactory, IMapper mapper, ITeamRepository teamRepository)
     {
         _playerRepository = playerRepository;
-        _playerShortInfoParser = playerShortInfoParser;
-        _openDotaHttpClient = openDotaHttpClient;
+        _openDotaHttpClient = httpClientFactory.CreateClient(Constants.OpenDotaApiHttpClientName);
         _mapper = mapper;
         _teamRepository = teamRepository;
     }
@@ -29,31 +27,57 @@ public class TeamService: ITeamService
     public async Task LoadTeamsDataToSystem()
     {
         var openDotaTeams = await GetOpenDotaTeamsAsync();
+        var updatedTeams = new List<TeamEntity>(openDotaTeams.Count);
 
         foreach (var team in openDotaTeams)
         {
-            if (string.IsNullOrEmpty(team.TeamName))
-            {
-                continue;
-            }
-            var teamEntity = await _teamRepository.GetTeamByNameAsync(team.TeamName);
+            var teamEntity = await _teamRepository.GetTeamByOpenDotaId(team.TeamId);
             var players = await _playerRepository.GetTeamPlayersList(team.TeamId);
 
-            if (teamEntity == null)
+            if (teamEntity is null)
             {
-                teamEntity = new TeamEntity();
+                teamEntity = _mapper.Map<TeamEntity>(team);
+            }
+            else
+            {
+                _mapper.Map(team, teamEntity);
             }
 
-            _mapper.Map(teamEntity, team);
-            await _teamRepository.SaveTeamAsync(teamEntity);
-
-            foreach (var player in players)
-            {
-                player.Team = teamEntity;
-                await _playerRepository.SavePlayerAsync(player);
-            }
+            teamEntity.TeamMembers = players;
+            updatedTeams.Add(teamEntity);
         }
+
+        await _teamRepository.SaveTeamsAsync(updatedTeams);
     }
+
+    // public async Task LoadTeamsDataToSystem()
+    // {
+    //     var openDotaTeams = await GetOpenDotaTeamsAsync();
+    //
+    //     foreach (var team in openDotaTeams)
+    //     {
+    //         if (string.IsNullOrEmpty(team.TeamName))
+    //         {
+    //             continue;
+    //         }
+    //         var teamEntity = await _teamRepository.GetTeamByNameAsync(team.TeamName);
+    //         var players = await _playerRepository.GetTeamPlayersList(team.TeamId);
+    //
+    //         if (teamEntity == null)
+    //         {
+    //             teamEntity = new TeamEntity();
+    //         }
+    //
+    //         _mapper.Map(teamEntity, team);
+    //         await _teamRepository.SaveTeamAsync(teamEntity);
+    //
+    //         foreach (var player in players)
+    //         {
+    //             player.Team = teamEntity;
+    //             await _playerRepository.SavePlayerAsync(player);
+    //         }
+    //     }
+    // }
     
     private async Task<List<TeamData>> GetOpenDotaTeamsAsync()
     {

@@ -2,7 +2,7 @@ namespace Repositories.Models.Entities;
 
 public class TeamEntity: UpdatableEntity<Guid>
 {
-    public int TeamId { get; init; }
+    public long TeamId { get; init; }
     
     public double TeamRating { get; init; }
     

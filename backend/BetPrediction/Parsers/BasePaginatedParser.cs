@@ -1,16 +1,17 @@
 using System.Collections;
+using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 
 namespace Parsers;
 
-public abstract class BasePaginatedTableParser<TData> : IPaginatedParser<TData, BaseTableParserParams>
+public abstract class BasePaginatedParser<TData> : IPaginatedParser<TData, BaseTableParserParams>
 {
     private int _currentPage;
     private int _pagesCount;
     private readonly HttpClient _client;
 
-    protected BasePaginatedTableParser()
+    protected BasePaginatedParser()
     {
         _currentPage = 1;
         _pagesCount = 1;
@@ -37,7 +38,7 @@ public abstract class BasePaginatedTableParser<TData> : IPaginatedParser<TData, 
 
             var parser = new HtmlParser();
             var document = await parser.ParseDocumentAsync(htmlSourceCode);
-            var table = (IHtmlTableElement?)document.QuerySelector(TableSelector);
+            var table = document.QuerySelector(TableSelector);
             if (setPagesCount)
             {
                 _pagesCount = Convert.ToInt32(document.QuerySelectorAll(".pagination__link--right")
@@ -49,7 +50,7 @@ public abstract class BasePaginatedTableParser<TData> : IPaginatedParser<TData, 
                 return new BaseTableParsedData<TData>(new List<TData>());
             }
 
-            return TransformTableContentToParsedData(table);
+            return TransformContentToParsedData(table);
         }
         catch (HttpRequestException e)
         {
@@ -62,7 +63,7 @@ public abstract class BasePaginatedTableParser<TData> : IPaginatedParser<TData, 
         return $"{ParsingUrl}?page={_currentPage}";
     }
 
-    protected abstract BaseTableParsedData<TData> TransformTableContentToParsedData(IHtmlTableElement tableElement);
+    protected abstract BaseTableParsedData<TData> TransformContentToParsedData(IElement tableElement);
 
     protected abstract string TableSelector { get; }
     protected abstract string ParsingUrl { get; }
