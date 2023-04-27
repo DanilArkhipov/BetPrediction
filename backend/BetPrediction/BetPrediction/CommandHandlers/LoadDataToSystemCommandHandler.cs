@@ -4,7 +4,7 @@ using Services;
 
 namespace BetPrediction.CommandHandlers;
 
-public class LoadDataToSystemCommandHandler: ICommandHandler<LoadDataToSystem>
+public class LoadDataToSystemCommandHandler : ICommandHandler<LoadDataToSystem>
 {
     private readonly IPlayerService _playerService;
 
@@ -16,7 +16,8 @@ public class LoadDataToSystemCommandHandler: ICommandHandler<LoadDataToSystem>
 
     private readonly IPatchService _patchService;
 
-    public LoadDataToSystemCommandHandler(IPlayerService playerService, ITeamService teamService, IGameService gameService, IHeroServices heroServices, IPatchService patchService)
+    public LoadDataToSystemCommandHandler(IPlayerService playerService, ITeamService teamService,
+        IGameService gameService, IHeroServices heroServices, IPatchService patchService)
     {
         _playerService = playerService;
         _teamService = teamService;
@@ -28,10 +29,10 @@ public class LoadDataToSystemCommandHandler: ICommandHandler<LoadDataToSystem>
 
     public async Task ExecuteAsync(LoadDataToSystem infoCommand)
     {
-       await _playerService.LoadPlayersDataToSystem();
+        await _playerService.LoadPlayersDataToSystem();
         await _teamService.LoadTeamsDataToSystem();
-        await _patchService.LoadPatchesToSystem();
-        await _heroServices.LoadHeroesToSystem();
-        await _gameService.LoadGamesToSystem(new DateOnly(2023,4,1));
+        // await _patchService.LoadPatchesToSystem();
+        // await _heroServices.LoadHeroesToSystem();
+        // await _gameService.LoadGamesToSystem(new DateOnly(2023, 4, 1));
     }
 }
